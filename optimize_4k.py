@@ -3,95 +3,134 @@ import subprocess
 import re
 import shutil
 import sys
+import argparse
+from concurrent.futures import ProcessPoolExecutor, as_completed
 
 def get_imagemagick_cmds():
-    """ImageMagick 명령어 감지 및 필수 명령행 구성 (v6/v7 호환)"""
+    """Detect ImageMagick version and return appropriate commands for processing and identification."""
     if shutil.which("magick"):
-        # ImageMagick v7+: magick 명령어 사용
+        # ImageMagick v7+: Use 'magick' for processing and 'magick identify' for metadata.
         return "magick", ["magick", "identify"]
-    elif shutil.which("convert") and shutil.which("identify"):
-        # ImageMagick v6: convert와 identify가 독립된 명령어로 존재
-        return "convert", ["identify"]
-    else:
-        print("❌ 오류: ImageMagick이 시스템에서 발견되지 않았습니다.")
-        print("\n필요한 도구를 설치해 주세요:")
-        print(" - macOS: brew install imagemagick")
-        print(" - Ubuntu/Debian: sudo apt install imagemagick")
-        print(" - Windows: winget install ImageMagick.ImageMagick")
-        print("\n자세한 내용은 설치 가이드를 참조하세요: https://imagemagick.org/script/download.php")
-        sys.exit(1)
-
-def optimize_images():
-    im_cmd, ident_cmd = get_imagemagick_cmds()
-    print(f"ℹ️  감지된 ImageMagick 명령어: {im_cmd} (identify: {' '.join(ident_cmd)})")
     
-    source_dir = 'Models'
-    output_dir = 'output'
-    target_width = 3840
-    target_height = 2160
+    if shutil.which("convert") and shutil.which("identify"):
+        # ImageMagick v6: 'convert' and 'identify' are separate standalone binaries.
+        return "convert", ["identify"]
+    
+    print("❌ Error: ImageMagick not found in system PATH.")
+    print("\nPlease install the required tools:")
+    print(" - macOS: brew install imagemagick")
+    print(" - Ubuntu/Debian: sudo apt install imagemagick")
+    print(" - Windows: winget install ImageMagick.ImageMagick")
+    print("\nVisit https://imagemagick.org/script/download.php for more info.")
+    sys.exit(1)
 
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
-    # Models 폴더 재귀 탐색
-    count = 0
-    valid_exts = ('.jpg', '.jpeg', '.png')
-    for root, dirs, files in os.walk(source_dir):
+def process_image(root, filename, source_dir, output_dir, target_w, target_h, im_cmd, ident_cmd, ext):
+    """
+    Process a single image: horizontal images are center-cropped, 
+    vertical images get a blurred 1px-stretched background.
+    """
+    valid_exts = ('.jpg', '.jpeg', '.png', '.webp')
+    if not filename.lower().endswith(valid_exts):
+        return None
+
+    input_path = os.path.join(root, filename)
+    
+    # Clean up filename (remove common bulk tags)
+    base_name = os.path.splitext(filename)[0]
+    clean_name = re.sub(r'(-?14000|-?10000|-?px)', '', base_name)
+    
+    # Generate prefix based on directory structure (Name-Album-File)
+    rel_path = os.path.relpath(root, source_dir)
+    if rel_path != '.':
+        prefix = rel_path.replace(os.path.sep, '-')
+        clean_name = f"{prefix}-{clean_name}"
+    
+    output_path = os.path.join(output_dir, f"{clean_name}-4K.{ext}")
+
+    try:
+        # Get image dimensions
+        identify_res = subprocess.check_output(ident_cmd + ['-format', '%w %h', input_path])
+        w, h = map(int, identify_res.decode().split())
+
+        if w < h:
+            # Vertical image: create blurred background from edges
+            cmd = [
+                im_cmd, input_path,
+                '(', '-clone', '0', '-resize', 'x216',
+                '(', '-clone', '0', '-gravity', 'West', '-crop', '1x0+0+0', '-resize', '1920x216!', ')',
+                '(', '-clone', '0', '-gravity', 'East', '-crop', '1x0+0+0', '-resize', '1920x216!', ')',
+                '-delete', '0', '-background', 'none', '+append', '-blur', '0x20', '-resize', f'{target_w}x{target_h}!', ')',
+                '(', '-clone', '0', '-resize', f'x{target_h}', ')',
+                '-delete', '0', '-gravity', 'center', '-compose', 'over', '-composite', '+repage',
+                output_path
+            ]
+            method = "1px Stretch"
+        else:
+            # Horizontal image: center crop
+            cmd = [
+                im_cmd, input_path, 
+                '-resize', f'{target_w}x{target_h}^', 
+                '-gravity', 'center', 
+                '-extent', f'{target_w}x{target_h}', 
+                output_path
+            ]
+            method = "Center Crop"
+
+        subprocess.run(cmd, check=True)
+        return f"✅ {filename} -> {os.path.basename(output_path)} [{method}]"
+    except Exception as err:
+        return f"❌ {filename} Error: {err}"
+
+
+def main():
+    """Main execution entry point."""
+    parser = argparse.ArgumentParser(description="Parallel 4K Image Optimizer using ImageMagick")
+    parser.add_argument("--input", default="Models", help="Input directory (default: Models)")
+    parser.add_argument("--output", default="output", help="Output directory (default: output)")
+    parser.add_argument("--width", type=int, default=3840, help="Target width (default: 3840)")
+    parser.add_argument("--height", type=int, default=2160, help="Target height (default: 2160)")
+    parser.add_argument("--format", default="jpg", choices=["jpg", "png", "webp"], help="Format (default: jpg)")
+    parser.add_argument("--workers", type=int, default=None, help="Parallel workers (default: CPU count)")
+    
+    args = parser.parse_args()
+
+    im_cmd, ident_cmd = get_imagemagick_cmds()
+    print(f"🚀 Initializing optimization: {args.width}x{args.height} [{args.format}]")
+    
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
+
+    # Collect all valid image paths
+    image_tasks = []
+    for root, _, files in os.walk(args.input):
         for f in files:
-            if not f.lower().endswith(valid_exts): continue
-            
-            input_path = os.path.join(root, f)
-            
-            # 파일명 정리
-            clean_name = re.sub(r'(-?14000|-?10000|-?px)', '', os.path.splitext(f)[0])
-            
-            # 상대 경로를 이용해 '이름-앨범-파일명' 형식 생성
-            rel_path = os.path.relpath(root, source_dir)
-            if rel_path != '.':
-                prefix = rel_path.replace(os.path.sep, '-')
-                clean_name = f"{prefix}-{clean_name}"
-            
-            output = os.path.join(output_dir, f"{clean_name}-4K.jpg")
+            image_tasks.append((root, f))
 
-            try:
-                # 이미지 크기 확인
-                dim = subprocess.check_output(ident_cmd + ['-format', '%w %h', input_path]).decode().split()
-                w, h = int(dim[0]), int(dim[1])
+    if not image_tasks:
+        print(f"⚠️ No images found in '{args.input}'.")
+        return
 
-                if w < h:
-                    # [세로형] 1px 스트레치 + 블러 배경
-                    cmd = [
-                        im_cmd, input_path,
-                        '(', '-clone', '0', '-resize', 'x216',
-                        '(', '-clone', '0', '-gravity', 'West', '-crop', '1x0+0+0', '-resize', '1920x216!', ')',
-                        '(', '-clone', '0', '-gravity', 'East', '-crop', '1x0+0+0', '-resize', '1920x216!', ')',
-                        '-delete', '0', '-background', 'none', '+append', '-blur', '0x20', '-resize', '3840x2160!', ')',
-                        '(', '-clone', '0', '-resize', f'x{target_height}', ')',
-                        '-delete', '0', '-gravity', 'center', '-compose', 'over', '-composite', '+repage',
-                        output
-                    ]
-                    method = "1px Stretch Background"
-                else:
-                    # [가로형] 중앙 크롭
-                    cmd = [
-                        im_cmd, input_path, 
-                        '-resize', f'{target_width}x{target_height}^', 
-                        '-gravity', 'center', 
-                        '-extent', f'{target_width}x{target_height}', 
-                        output
-                    ]
-                    method = "Center Crop"
+    print(f"� Found {len(image_tasks)} items. Processing in parallel...")
+    
+    processed_count = 0
+    with ProcessPoolExecutor(max_workers=args.workers) as executor:
+        futures = {
+            executor.submit(
+                process_image, r, f, args.input, args.output, 
+                args.width, args.height, im_cmd, ident_cmd, args.format
+            ): f for r, f in image_tasks
+        }
+        
+        for future in as_completed(futures):
+            res = future.result()
+            if res:
+                print(res)
+                if "✅" in res:
+                    processed_count += 1
 
-                subprocess.run(cmd, check=True)
-                print(f"✅ 성공: {f} -> {output} [{method}]")
-                count += 1
-            except Exception as e:
-                print(f"❌ 오류: {f} ({e})")
+    print(f"\n✨ Successfully optimized {processed_count} images.")
 
-    if count == 0:
-        print("⚠️  처리할 JPG 이미지를 찾지 못했습니다.")
-    else:
-        print(f"✨ 총 {count}장의 이미지가 최적화되었습니다.")
 
 if __name__ == "__main__":
-    optimize_images()
+    main()
