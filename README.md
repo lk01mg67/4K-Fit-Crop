@@ -67,7 +67,7 @@ winget install ImageMagick.ImageMagick
 # 1. 스크립트 실행
 python3 optimize_4k.py
 
-# 2. 생성된 Wallpaper 폴더 확인
+# 2. 생성된 output 폴더 확인
 ```
 
 ---
