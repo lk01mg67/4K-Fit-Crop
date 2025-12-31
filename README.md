@@ -11,10 +11,13 @@
 
 ## 요구 사항 및 설치
 
-### Python 3
-Python 3가 설치되어 있어야 합니다.
+### 1. Python (v3.10+)
+스크립트는 **Python 3.10** 이상의 환경에서 테스트되었습니다.
 
-### ImageMagick
+### 2. ImageMagick (v7.1+)
+이미지 프로세싱을 위해 ImageMagick이 필요합니다.
+- **권장**: v7.1.0 이상 (`magick` 명령어 사용)
+- **최소**: v6.9.0 이상 (`convert` 명령어 사용)
 
 **macOS:**
 ```bash
@@ -27,22 +30,19 @@ sudo apt update
 sudo apt install imagemagick
 ```
 
-**Linux (Fedora/RHEL):**
-```bash
-sudo dnf install ImageMagick
-```
-
 **Windows:**
-PowerShell 또는 명령 프롬프트에서 아래 명령어로 설치할 수 있습니다.
 ```powershell
 winget install ImageMagick.ImageMagick
 ```
-*또는 [ImageMagick 공식 홈페이지](https://imagemagick.org/script/download.php#windows)에서 설치 파일을 다운로드하세요. (설치 중 **"Install legacy utilities (e.g. convert)"** 또는 **"Add to PATH"** 옵션 체크 권장)*
+*설치 시 **"Install legacy utilities (e.g. convert)"** 및 **"Add to PATH"** 옵션 체크를 권장합니다.*
 
 ## 사용 방법
 
 ```bash
+# 1. 스크립트 실행
 python3 optimize_4k.py
+
+# 2. 생성된 Wallpaper 폴더 확인
 ```
 
 ---

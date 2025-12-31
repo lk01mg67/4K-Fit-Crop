@@ -1,0 +1,3 @@
+# Python requirements (Current script uses only standard libraries)
+# External libraries for future reference or alternative versions:
+Pillow>=10.0.0
