@@ -38,10 +38,11 @@ def optimize_images():
             # 파일명 정리
             clean_name = re.sub(r'(-?14000|-?10000|-?px)', '', os.path.splitext(f)[0])
             
-            # 충돌 방지를 위해 앨범명(부모 폴더)을 파일명에 포함
-            album_name = os.path.basename(root)
-            if album_name and album_name != source_dir:
-                clean_name = f"{album_name}-{clean_name}"
+            # 상대 경로를 이용해 '이름-앨범-파일명' 형식 생성
+            rel_path = os.path.relpath(root, source_dir)
+            if rel_path != '.':
+                prefix = rel_path.replace(os.path.sep, '-')
+                clean_name = f"{prefix}-{clean_name}"
             
             output = os.path.join(output_dir, f"{clean_name}-4K.jpg")
 

@@ -57,9 +57,9 @@ winget install ImageMagick.ImageMagick
 
 최적화된 이미지는 `output` 폴더에 저장됩니다.
 
-- **파일명 생성 규칙**: `출력폴더/앨범명-파일명-4K.jpg`
-- **충돌 방지**: 중복된 파일명을 방지하기 위해 **앨범명(상위 폴더명)**이 파일명 앞에 자동으로 붙습니다.
-- **예시**: `Models/Name/Album/001.jpg` -> `output/Album-001-4K.jpg`
+- **파일명 생성 규칙**: `출력폴더/이름-앨범명-파일명-4K.jpg`
+- **충돌 방지**: 중복된 파일명을 방지하기 위해 **상위 폴더 구조(이름 및 앨범명)**가 파일명 앞에 자동으로 붙습니다.
+- **예시**: `Models/Name/Album/001.jpg` -> `output/Name-Album-001-4K.jpg`
 
 ## 사용 방법
 
