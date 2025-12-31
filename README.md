@@ -1,5 +1,7 @@
 # 고해상도 이미지 4K 최적화 (Python)
 
+> **Vidle Coding**으로 생성된 프로젝트입니다.
+
 이 스크립트는 `ImageMagick`을 활용하여 고해상도 이미지를 4K(3840x2160) 월페이퍼로 최적화합니다.  
 **macOS**, **Linux**, **Windows** 환경을 모두 지원합니다.
 
@@ -42,7 +44,7 @@ sudo apt install imagemagick
 winget install ImageMagick.ImageMagick
 ```
 
-*설치 시 **"Install legacy utilities (e.g. convert)"** 및 **"Add to PATH"** 옵션 체크를 권장합니다.*
+_설치 시 **"Install legacy utilities (e.g. convert)"** 및 **"Add to PATH"** 옵션 체크를 권장합니다._
 
 ## 폴더 구조 및 처리 방식
 
@@ -71,4 +73,5 @@ python3 optimize_4k.py
 ```
 
 ---
+
 본 도구는 [optimize_4k.py](./optimize_4k.py) 스크립트를 통해 실행됩니다.
