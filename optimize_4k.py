@@ -6,7 +6,7 @@ import sys
 import argparse
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 def get_imagemagick_cmds():
     """Detect ImageMagick version and return appropriate commands for processing and identification."""
