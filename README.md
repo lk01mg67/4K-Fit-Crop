@@ -45,5 +45,18 @@ python3 optimize_4k.py
 # 2. 생성된 Wallpaper 폴더 확인
 ```
 
+## 폴더 구조 및 처리 방식
+
+### 📁 입력: `Models`
+스크립트는 `Models` 폴더를 재귀적으로 탐색하여 모든 `.jpg` 파일을 찾습니다.
+- **구조**: `Models/이름/앨범명/사진.jpg` (예: `Models/Name/Album/photo.jpg`)
+- **처리**: 하위 폴더의 모든 이미지를 자동으로 찾아 처리합니다.
+
+### 📁 출력: `output`
+최적화된 이미지는 `output` 폴더에 저장됩니다.
+- **파일명 생성 규칙**: `출력폴더/앨범명-파일명-4K.jpg`
+- **충돌 방지**: 중복된 파일명을 방지하기 위해 **앨범명(상위 폴더명)**이 파일명 앞에 자동으로 붙습니다.
+- **예시**: `Models/Name/Album/photo.jpg` -> `output/Album-photo-4K.jpg`
+
 ---
 본 도구는 [optimize_4k.py](./optimize_4k.py) 스크립트를 통해 실행됩니다.
