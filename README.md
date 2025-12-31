@@ -31,11 +31,16 @@
 brew install imagemagick
 ```
 
-**Linux (Ubuntu/Debian):**
+**Linux:**
 
 ```bash
+# Ubuntu/Debian
 sudo apt update
 sudo apt install imagemagick
+
+# Fedora
+sudo dnf upgrade --refresh
+sudo dnf install ImageMagick
 ```
 
 **Windows:**
