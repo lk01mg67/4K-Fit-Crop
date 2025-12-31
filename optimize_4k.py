@@ -28,9 +28,10 @@ def optimize_images():
 
     # Models 폴더 재귀 탐색
     count = 0
+    valid_exts = ('.jpg', '.jpeg', '.png')
     for root, dirs, files in os.walk(source_dir):
         for f in files:
-            if not f.lower().endswith('.jpg'): continue
+            if not f.lower().endswith(valid_exts): continue
             
             input_path = os.path.join(root, f)
             
