@@ -1,6 +1,7 @@
 .DS_Store
 .venv/
-Wallpaper/
+output/
 *.jpg
 *.jpeg
 *.png
+Models/
