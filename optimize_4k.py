@@ -20,6 +20,7 @@ def get_imagemagick_cmds():
     print("\nPlease install the required tools:")
     print(" - macOS: brew install imagemagick")
     print(" - Ubuntu/Debian: sudo apt install imagemagick")
+    print(" - Fedora: sudo dnf install ImageMagick")
     print(" - Windows: winget install ImageMagick.ImageMagick")
     print("\nVisit https://imagemagick.org/script/download.php for more info.")
     sys.exit(1)

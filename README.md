@@ -18,14 +18,14 @@
 
 스크립트는 **Python 3.10** 이상의 환경에서 테스트되었습니다.
 
-### 2. ImageMagick (v7.1+)
+### 2. ImageMagick
 
-이미지 프로세싱을 위해 ImageMagick이 필요합니다.
+이미지 프로세싱을 위해 **ImageMagick**이 필요합니다. 스크립트는 다음 순서로 명령어를 찾아 자동으로 실행합니다.
 
-- **권장**: v7.1.0 이상 (`magick` 명령어 사용)
-- **최소**: v6.9.0 이상 (`convert` 명령어 사용)
+1. **`magick` (우선)**: ImageMagick v7.0 이상에서 사용하는 최신 명령어
+2. **`convert` (차선)**: ImageMagick v6.9 이하에서 사용하는 레거시 명령어
 
-**macOS:**
+**설치 방법:**
 
 ```bash
 brew install imagemagick
