@@ -86,8 +86,8 @@ python3 optimize_4k.py
 # 2. 생성된 output 폴더 확인
 ```
 
-## 라이선스
+## 라이선스 (License)
 
-이 프로젝트는 [MIT](LICENSE) 라이선스에 따라 라이선스가 부여됩니다.
-
-`Models/` 디렉토리에 포함된 이미지들은 AI를 통해 생성되었으며, 저작권 제한 없이 자유롭게 사용할 수 있습니다. (The images in the `Models/` directory are AI-generated and are free to use without copyright restrictions.)
+- **코드 (Code)**: 이 프로젝트의 소스 코드는 [MIT](LICENSE) 라이선스에 따라 자유롭게 사용 및 재배포가 가능합니다.
+- **이미지 (Images)**: `Models/` 디렉토리에 포함된 샘플 이미지들은 **AI(Generative AI)를 통해 원본 생성**되었으며, 어떠한 저작권 제한 없이 자유롭게 사용하실 수 있습니다.
+  - *Note: The images in the `Models/` directory are AI-generated and are free to use without copyright restrictions.*
