@@ -110,7 +110,7 @@ python3 optimize_4k.py --input raw_imgs --output processed --width 1920 --height
 | `--width` | `3840` | 목표 가로 해상도 (px) |
 | `--height` | `2160` | 목표 세로 해상도 (px) |
 | `--format` | `jpg` | 출력 파일 포맷 (`jpg`, `png`, `webp`) |
-| `--workers` | `CPU 코어 수` | 병렬 처리에 사용할 프로세스 수 |
+| `--workers` | `4` | 병렬 처리에 사용할 프로세스 수 |
 
 
 ## 라이선스 (License)

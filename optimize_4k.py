@@ -92,7 +92,7 @@ def main():
     parser.add_argument("--width", type=int, default=3840, help="Target width (default: 3840)")
     parser.add_argument("--height", type=int, default=2160, help="Target height (default: 2160)")
     parser.add_argument("--format", default="jpg", choices=["jpg", "png", "webp"], help="Format (default: jpg)")
-    parser.add_argument("--workers", type=int, default=None, help="Parallel workers (default: CPU count)")
+    parser.add_argument("--workers", type=int, default=4, help="Parallel workers (default: 4)")
     
     args = parser.parse_args()
 
