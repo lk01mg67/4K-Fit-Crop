@@ -1,7 +1,7 @@
 # 고해상도 이미지 4K 최적화 (Python)
 
 이 스크립트는 `ImageMagick`을 활용하여 고해상도 이미지를 4K(3840x2160) 월페이퍼로 최적화합니다.  
-**macOS**와 **Linux** 환경을 모두 지원합니다.
+**macOS**, **Linux**, **Windows** 환경을 모두 지원합니다.
 
 ## 기능
 - **가로형 이미지**: 16:9 비율로 중앙 크롭 (Center Crop)
@@ -31,6 +31,13 @@ sudo apt install imagemagick
 ```bash
 sudo dnf install ImageMagick
 ```
+
+**Windows:**
+PowerShell 또는 명령 프롬프트에서 아래 명령어로 설치할 수 있습니다.
+```powershell
+winget install ImageMagick.ImageMagick
+```
+*또는 [ImageMagick 공식 홈페이지](https://imagemagick.org/script/download.php#windows)에서 설치 파일을 다운로드하세요. (설치 중 **"Install legacy utilities (e.g. convert)"** 또는 **"Add to PATH"** 옵션 체크 권장)*
 
 ## 사용 방법
 
