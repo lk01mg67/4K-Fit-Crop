@@ -2,7 +2,9 @@
 
 모든 주요 변경 사항은 이 파일에 기록됩니다.
 
-## [Unreleased]
+## [1.1.1] - 2025-12-31
+- **Docs**: README에 CLI 고급 사용법, WebP 지원, 병렬 처리 기능 상세 설명 추가
+- **Docs**: ImageMagick 설치 및 감지 로직 설명 현행화 (Fedora 포함)
 - **Chore**: 불필요한 `requirements.txt` 삭제 및 README 설치 안내 간소화 (표준 라이브러리만 사용)
 - **Feat**: 병렬 처리 기능 구현, CLI 인자 추가, WebP 지원 및 PEP8 리팩토링 (`6ed336d`)
 - **Docs**: 문서 스타일 수정 및 TODO 업데이트 (`7971247`)
