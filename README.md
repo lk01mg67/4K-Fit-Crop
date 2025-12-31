@@ -46,6 +46,20 @@ winget install ImageMagick.ImageMagick
 
 _설치 시 **"Install legacy utilities (e.g. convert)"** 및 **"Add to PATH"** 옵션 체크를 권장합니다._
 
+### 3. Python 패키지 설치 (선택 사항)
+
+스크립트 실행을 위한 환경을 설정합니다. (표준 라이브러리만 사용하므로 필수 단계는 아닙니다.)
+
+```bash
+# 가상환경 생성 및 활성화
+python3 -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+# .venv\Scripts\activate   # Windows
+
+# 의존성 패키지 설치
+pip install -r requirements.txt
+```
+
 ## 폴더 구조 및 처리 방식
 
 ### 📁 입력: `Models`
@@ -71,6 +85,10 @@ python3 optimize_4k.py
 
 # 2. 생성된 output 폴더 확인
 ```
+
+## 라이선스
+
+이 프로젝트는 [MIT](LICENSE) 라이선스에 따라 라이선스가 부여됩니다.
 
 ---
 
