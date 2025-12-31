@@ -48,6 +48,8 @@ winget install ImageMagick.ImageMagick
 
 ### 📁 입력: `Models`
 
+스크립트는 `Models` 폴더를 재귀적으로 탐색하여 모든 이미지 파일(`.jpg`, `.jpeg`, `.png`)을 찾습니다.
+
 - **구조**: `Models/이름/앨범명/이미지` (예: `Models/Name/Album/Number.jpg`)
 - **처리**: 하위 폴더의 모든 이미지를 자동으로 찾아 처리합니다.
 
