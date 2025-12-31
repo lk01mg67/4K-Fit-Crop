@@ -56,7 +56,15 @@ winget install ImageMagick.ImageMagick
 
 ### 3. 스크립트 실행 준비
 
-이 스크립트는 **Python 표준 라이브러리**만 사용하므로 별도의 외부 패키지(`pip install`) 설치가 필요하지 않습니다. ImageMagick만 설치되어 있다면 바로 실행 가능합니다.
+이 스크립트는 **Python 표준 라이브러리**를 기반으로 하지만, 향상된 사용자 경험(진행 상태 표시)을 위해 **`tqdm`** 라이브러리를 사용합니다. 
+
+- **자동 설치**: 스크립트 실행 시 `tqdm`이 없으면 자동으로 설치를 시도합니다.
+- **수동 설치 (권장)**:
+  ```bash
+  pip install -r requirements.txt
+  ```
+
+ImageMagick와 `tqdm`이 준비되었다면 바로 실행 가능합니다.
 
 ## 폴더 구조 및 처리 방식
 
