@@ -1,6 +1,6 @@
 # 고해상도 이미지 4K 최적화 (Python)
 
-> **Vidle Coding**으로 생성된 프로젝트입니다.
+> **Vibe Coding**으로 생성된 프로젝트입니다.
 
 이 스크립트는 `ImageMagick`을 활용하여 고해상도 이미지를 4K(3840x2160) 월페이퍼로 최적화합니다.  
 **macOS**, **Linux**, **Windows** 환경을 모두 지원합니다.
