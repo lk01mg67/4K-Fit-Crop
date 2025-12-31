@@ -1,7 +1,15 @@
 .DS_Store
 .venv/
 output/
+
+# 모든 이미지 무시
 *.jpg
 *.jpeg
 *.png
+
+# Models 폴더 무시
 Models/
+
+# 하지만 샘플용 이미지는 예외로 허용
+!Models/h.jpg
+!Models/w.jpg

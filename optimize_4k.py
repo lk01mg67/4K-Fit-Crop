@@ -11,7 +11,12 @@ def get_imagemagick_cmd():
     elif shutil.which("convert"):
         return "convert"
     else:
-        print("❌ 오류: ImageMagick이 설치되어 있지 않습니다.")
+        print("❌ 오류: ImageMagick이 시스템에서 발견되지 않았습니다.")
+        print("\n필요한 도구를 설치해 주세요:")
+        print(" - macOS: brew install imagemagick")
+        print(" - Ubuntu/Debian: sudo apt install imagemagick")
+        print(" - Windows: winget install ImageMagick.ImageMagick")
+        print("\n자세한 내용은 설치 가이드를 참조하세요: https://imagemagick.org/script/download.php")
         sys.exit(1)
 
 def optimize_images():
