@@ -6,6 +6,8 @@ import sys
 import argparse
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
+__version__ = "1.2.0"
+
 def get_imagemagick_cmds():
     """Detect ImageMagick version and return appropriate commands for processing and identification."""
     if shutil.which("magick"):
@@ -42,10 +44,24 @@ def process_image(root, filename, source_dir, output_dir, target_w, target_h, im
     clean_name = re.sub(r'(-?14000|-?10000|-?px)', '', base_name)
     
     # Generate prefix based on directory structure (Name-Album-File)
-    rel_path = os.path.relpath(root, source_dir)
-    if rel_path != '.':
-        prefix = rel_path.replace(os.path.sep, '-')
-        clean_name = f"{prefix}-{clean_name}"
+    # Apply prefix ONLY if the original base_name consists only of digits
+    if base_name.isdigit():
+        abs_root = os.path.abspath(root)
+        path_parts = abs_root.split(os.sep)
+        
+        if 'Models' in path_parts:
+            idx = path_parts.index('Models')
+            # Capture path components after 'Models' (e.g., ['Naksu', 'Album'])
+            prefix_parts = path_parts[idx+1:]
+            if prefix_parts:
+                prefix = "-".join(prefix_parts)
+                clean_name = f"{prefix}-{clean_name}"
+        else:
+            # Fallback: relative to the input source_dir
+            rel_path = os.path.relpath(root, source_dir)
+            if rel_path != '.':
+                prefix = rel_path.replace(os.path.sep, '-')
+                clean_name = f"{prefix}-{clean_name}"
     
     output_path = os.path.join(output_dir, f"{clean_name}-4K.{ext}")
 
@@ -96,6 +112,13 @@ def main():
     
     args = parser.parse_args()
 
+    try:
+        from tqdm import tqdm
+    except ImportError:
+        print("ℹ️ 'tqdm' not found. Installing for better experience...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "tqdm"], check=True)
+        from tqdm import tqdm
+
     im_cmd, ident_cmd = get_imagemagick_cmds()
     print(f"🚀 Initializing optimization: {args.width}x{args.height} [{args.format}]")
     
@@ -112,7 +135,7 @@ def main():
         print(f"⚠️ No images found in '{args.input}'.")
         return
 
-    print(f"� Found {len(image_tasks)} items. Processing in parallel...")
+    print(f" Found {len(image_tasks)} items. Processing in parallel...")
     
     processed_count = 0
     with ProcessPoolExecutor(max_workers=args.workers) as executor:
@@ -123,12 +146,16 @@ def main():
             ): f for r, f in image_tasks
         }
         
-        for future in as_completed(futures):
-            res = future.result()
-            if res:
-                print(res)
-                if "✅" in res:
-                    processed_count += 1
+        # Use tqdm for progress tracking
+        with tqdm(total=len(futures), desc="Optimizing", unit="img") as pbar:
+            for future in as_completed(futures):
+                res = future.result()
+                if res:
+                    if "❌" in res:
+                        tqdm.write(res) # Print error without breaking progress bar
+                    if "✅" in res:
+                        processed_count += 1
+                pbar.update(1)
 
     print(f"\n✨ Successfully optimized {processed_count} images.")
 

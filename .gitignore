@@ -12,4 +12,4 @@ Models/
 
 # 하지만 샘플용 이미지는 예외로 허용
 !Models/h.jpg
-!Models/w.jpg
+!Models/w.jpglogs/

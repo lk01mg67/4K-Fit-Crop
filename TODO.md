@@ -7,7 +7,7 @@
 - [x] **병렬 처리 (Parallel Processing)**: `concurrent.futures`를 도입하여 여러 이미지를 동시에 처리함으로써 실행 속도 개선
 - [x] **CLI 인자 지원 (CLI Arguments)**: `argparse`를 사용하여 출력 해상도, 입력/출력 경로를 명령어로 유연하게 변경 가능하도록 수정
 - [x] **WebP 지원**: 고효율 이미지 포맷인 WebP 출력 옵션 추가
-- [ ] **진행 상태 표시**: `tqdm` 등을 활용하여 대량의 이미지 처리 시 진행 상황(Progress bar)을 시각화
+- [x] **진행 상태 표시**: `tqdm` 등을 활용하여 대량의 이미지 처리 시 진행 상황(Progress bar)을 시각화
 
 ## 🛠 유지보수 및 문서화
 
