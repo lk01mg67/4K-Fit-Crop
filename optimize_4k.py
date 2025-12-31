@@ -4,12 +4,14 @@ import re
 import shutil
 import sys
 
-def get_imagemagick_cmd():
-    """ImageMagick 명령어 감지 (v7: magick, v6: convert)"""
+def get_imagemagick_cmds():
+    """ImageMagick 명령어 감지 및 필수 명령행 구성 (v6/v7 호환)"""
     if shutil.which("magick"):
-        return "magick"
-    elif shutil.which("convert"):
-        return "convert"
+        # ImageMagick v7+: magick 명령어 사용
+        return "magick", ["magick", "identify"]
+    elif shutil.which("convert") and shutil.which("identify"):
+        # ImageMagick v6: convert와 identify가 독립된 명령어로 존재
+        return "convert", ["identify"]
     else:
         print("❌ 오류: ImageMagick이 시스템에서 발견되지 않았습니다.")
         print("\n필요한 도구를 설치해 주세요:")
@@ -20,8 +22,8 @@ def get_imagemagick_cmd():
         sys.exit(1)
 
 def optimize_images():
-    im_cmd = get_imagemagick_cmd()
-    print(f"ℹ️  감지된 ImageMagick 명령어: {im_cmd}")
+    im_cmd, ident_cmd = get_imagemagick_cmds()
+    print(f"ℹ️  감지된 ImageMagick 명령어: {im_cmd} (identify: {' '.join(ident_cmd)})")
     
     source_dir = 'Models'
     output_dir = 'output'
@@ -53,7 +55,7 @@ def optimize_images():
 
             try:
                 # 이미지 크기 확인
-                dim = subprocess.check_output([im_cmd, 'identify', '-format', '%w %h', input_path]).decode().split()
+                dim = subprocess.check_output(ident_cmd + ['-format', '%w %h', input_path]).decode().split()
                 w, h = int(dim[0]), int(dim[1])
 
                 if w < h:
