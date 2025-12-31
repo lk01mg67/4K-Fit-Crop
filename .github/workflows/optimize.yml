@@ -38,3 +38,9 @@ jobs:
 #            git commit -m "chore: auto-optimize images [skip ci]"
 #            git push
 #          fi
+
+      - name: Upload optimized images
+        uses: actions/upload-artifact@v4
+        with:
+          name: optimized-wallpapers
+          path: output/
