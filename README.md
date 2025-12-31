@@ -89,7 +89,3 @@ python3 optimize_4k.py
 ## 라이선스
 
 이 프로젝트는 [MIT](LICENSE) 라이선스에 따라 라이선스가 부여됩니다.
-
----
-
-본 도구는 [optimize_4k.py](./optimize_4k.py) 스크립트를 통해 실행됩니다.
