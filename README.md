@@ -89,3 +89,5 @@ python3 optimize_4k.py
 ## 라이선스
 
 이 프로젝트는 [MIT](LICENSE) 라이선스에 따라 라이선스가 부여됩니다.
+
+`Models/` 디렉토리에 포함된 이미지들은 AI를 통해 생성되었으며, 저작권 제한 없이 자유롭게 사용할 수 있습니다. (The images in the `Models/` directory are AI-generated and are free to use without copyright restrictions.)
