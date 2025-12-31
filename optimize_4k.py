@@ -19,7 +19,7 @@ def optimize_images():
     print(f"ℹ️  감지된 ImageMagick 명령어: {im_cmd}")
     
     source_dir = '.'
-    output_dir = 'Wallpaper-4K'
+    output_dir = 'Wallpaper'
     target_width = 3840
     target_height = 2160
 
