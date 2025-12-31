@@ -44,7 +44,7 @@ sudo apt install imagemagick
 winget install ImageMagick.ImageMagick
 ```
 
-_설치 시 **"Install legacy utilities (e.g. convert)"** 및 **"Add to PATH"** 옵션 체크를 권장합니다._
+설치 시 **"Install legacy utilities (e.g. convert)"** 및 **"Add to PATH"** 옵션 체크를 권장합니다.
 
 ### 3. Python 패키지 설치 (선택 사항)
 
@@ -90,4 +90,4 @@ python3 optimize_4k.py
 
 - **코드 (Code)**: 이 프로젝트의 소스 코드는 [MIT](LICENSE) 라이선스에 따라 자유롭게 사용 및 재배포가 가능합니다.
 - **이미지 (Images)**: `Models/` 디렉토리에 포함된 샘플 이미지들은 **AI(Generative AI)를 통해 원본 생성**되었으며, 어떠한 저작권 제한 없이 자유롭게 사용하실 수 있습니다.
-  - *Note: The images in the `Models/` directory are AI-generated and are free to use without copyright restrictions.*
+  - _Note: The images in the `Models/` directory are AI-generated and are free to use without copyright restrictions._
